@@ -1,13 +1,14 @@
-#include <vector>
-
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
         int length = cost.size();
-        if(length <= 4){
-            for()
+        int f1 = 0;
+        int f2 = 0;
+        for(int i=length-1; i>=0; i--){
+            int fn = cost[i] + min(f1, f2);
+            f2 = f1;
+            f1 = fn;
         }
-        int result = 0;
-        return result;
+        return min(f1, f2);
     }
 };
