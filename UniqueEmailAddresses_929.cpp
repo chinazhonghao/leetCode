@@ -6,21 +6,21 @@ public:
         unordered_set<string> filter_emails;
         for(int i=0; i<length; i++){
             string& current = emails[i];
-            int len = current.size();
-            int index_plus = current.find_first_of('+');
-            int index = current.find_first_of('@');
-            string prefix = "";
-            if(index_plus != string::npos){
-                prefix.append(current, 0, index_plus);
+            int domainStartIndex = current.find_first_of('@');
+            string localName(current, 0, domainStartIndex);
+            int plusIndex = localName.find_first_of('+');
+            localName = localName.substr(0, plusIndex);
+            string actualLocalName = "";
+            int startIndex = -1;
+            while(1){
+                int dotIndex = localName.find_first_of('.', startIndex+1);
+                actualLocalName += localName.substr(startIndex+1, dotIndex-startIndex-1);
+                startIndex = dotIndex;
+                if(dotIndex == string::npos){
+                    break;
+                }
             }
-
-            string tail(current.begin()+index, current.end());
-            int index_dot = prefix.find_first_of('.');
-            while(index_dot != string::npos){
-                prefix = string(prefix, 0, index_dot) + string(prefix.begin()+index_dot, prefix.end());
-                index_dot = prefix.find_first_of('.');
-            }
-            filter_emails.insert(prefix + tail);
+            filter_emails.insert(actualLocalName + current.substr(domainStartIndex));
         }
         return filter_emails.size();
     }
