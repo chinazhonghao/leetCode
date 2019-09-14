@@ -1,6 +1,9 @@
 class Solution {
 public:
     bool isPowerOfFour(int num) {
+        if(num <= 0){
+            return false;
+        }
         long tmp = (long)num;
         long input = tmp>0?tmp:-tmp;
         if((input & (input-1)) != 0){
