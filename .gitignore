@@ -3,3 +3,4 @@
 .idea/*
 *.iml
 *.code-workspace
+.DS_Store
