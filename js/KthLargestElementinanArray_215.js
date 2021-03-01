@@ -4,35 +4,37 @@
  * @return {number}
  */
 var findKthLargest = function (nums, k) {
-  function _divide(l, r){
-    let base = nums[l];
-    while(l <= r){
-      while(l <= r && nums[l] >= base) {
-        l++;
-      }
-      while(l <= r && nums[r] < base) {
+  function _divide(l, r) {
+    let base = nums[l], tmp = l;
+    while (l < r) {
+      while (l < r && base > nums[r]) {
         r--;
       }
-      let tmp = nums[l];
-      nums[l] = nums[r];
-      nums[r] = tmp;
-      l++, r--;
+      while (l < r && base <= nums[l]) {
+        l++;
+      }
+      _swap(l, r);
     }
-    nums[r] = base;
+    _swap(tmp, r);
     return r;
+  }
+
+  function _swap(i, j) {
+    let tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
   }
 
   function _recursive(l, r) {
     let index = _divide(l, r);
-    if(index === k){
+    if (index === k) {
       return index;
-    } else if(index > k) {
-      return _recursive(l, index);
+    } else if (index > k) {
+      return _recursive(l, index - 1);
     } else {
-      return _recursive(index, r);
+      return _recursive(index + 1, r);
     }
   }
-  console.log(_recursive(0, nums.length-1));
+  k--;
+  return nums[_recursive(0, nums.length - 1)];
 };
-
-console.log(findKthLargest([3,2,1,5,6,4],2));
