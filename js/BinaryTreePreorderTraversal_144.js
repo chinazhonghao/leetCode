@@ -13,7 +13,7 @@
 var preorderTraversal = function (root) {
   const result = [];
   const stack = [];
-  const current = root;
+  let current = root;
   while (current || stack.length > 0) {
     if ( current ) {
       result.push(current.val);
